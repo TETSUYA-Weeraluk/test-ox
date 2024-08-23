@@ -24,6 +24,7 @@ const Home = () => {
   const [allScore, setAllScore] = useState<{ user: string; score: number }[]>(
     []
   );
+  const [disabledButton, setDisabledButton] = useState<boolean>(false);
   const stackWinUpdateScore = 2;
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const Home = () => {
             border: "1px solid #ECCEAE",
             "&:disabled": {
               color: "black",
-              backgroundColor: "#ECCEAE",
+              backgroundColor: selected.includes(i) ? "#ECCEAE" : "transparent",
             },
             "&:hover": {
               backgroundColor: "#ECCEAE",
@@ -76,7 +77,10 @@ const Home = () => {
           onClick={() => {
             userSelectBoarding(i);
           }}
-          disabled={boarding?.find((item) => item.selected === i) !== undefined}
+          disabled={
+            boarding?.find((item) => item.selected === i) !== undefined ||
+            disabledButton
+          }
         >
           {boarding?.find((item) => item.selected === i)
             ? boarding?.find((item) => item.selected === i)?.selectBy === "user"
@@ -113,8 +117,9 @@ const Home = () => {
 
     newBoarding.push({ selectBy: "user", selected: index });
     const newSelected = [...selected, index];
-
+    setSelected(newSelected);
     setBoarding(newBoarding);
+    setDisabledButton(true);
 
     const isWinner = checkWinner(newBoarding);
 
@@ -129,7 +134,10 @@ const Home = () => {
         return;
       } else {
         botSelectBoarding(newBoarding, newSelected);
+
         setBoarding([...newBoarding]);
+
+        setDisabledButton(false);
         const isWinner = checkWinner(newBoarding);
         if (isWinner) {
           handleClickOpen();
@@ -147,6 +155,7 @@ const Home = () => {
     setSelected([]);
     setIsWinner(null);
     updateTolocalStorage();
+    setDisabledButton(false);
   };
 
   const checkWinner = (board: Boarding[]) => {
