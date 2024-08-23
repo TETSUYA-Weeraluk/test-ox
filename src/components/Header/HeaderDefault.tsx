@@ -14,7 +14,7 @@ const HeaderDefault = () => {
   };
 
   return (
-    <div className="p-4 w-full flex items-center justify-between">
+    <div className="py-4 px-8 w-full flex items-center justify-between">
       <h1 className="text-2xl font-bold">XO</h1>
       <div className="flex gap-4 items-center">
         <div className="flex items-center gap-2">

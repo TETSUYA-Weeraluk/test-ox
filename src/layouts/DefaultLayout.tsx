@@ -18,7 +18,6 @@ const DefaultLayout: React.FC = () => {
       <main className="w-full flex-grow max-w-7xl mx-auto p-4">
         <Outlet />
       </main>
-      <footer>Default Footer</footer>
     </div>
   );
 };
