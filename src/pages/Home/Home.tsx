@@ -71,15 +71,69 @@ const Home = () => {
 
     setBoarding(newBoarding);
 
+    const isWinner = checkWinner(newBoarding);
+
     setTimeout(() => {
-      botSelectBoarding(newBoarding, newSelected);
-      setBoarding([...newBoarding]);
+      if (isWinner) {
+        if (isWinner === "user") {
+          alert("You win");
+          return;
+        } else if (isWinner === "bot") {
+          alert("You lose");
+          return;
+        } else {
+          alert("Draw");
+          return;
+        }
+      } else {
+        botSelectBoarding(newBoarding, newSelected);
+        setBoarding([...newBoarding]);
+      }
     }, 500);
   };
 
   const resetBoarding = () => {
     setBoarding([]);
     setSelected([]);
+  };
+
+  const checkWinner = (board: Boarding[]) => {
+    const userSelected = board
+      .filter((item) => item.selectBy === "user")
+      .map((item) => item.selected);
+    const botSelected = board
+      .filter((item) => item.selectBy === "bot")
+      .map((item) => item.selected);
+
+    const winner = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ].find((item) => {
+      if (
+        item.every((i) => userSelected.includes(i)) ||
+        item.every((i) => botSelected.includes(i))
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    if (winner) {
+      if (winner.every((i) => userSelected.includes(i))) {
+        setScore(score + 1);
+        return "user";
+      } else if (winner.every((i) => botSelected.includes(i))) {
+        return "bot";
+      } else {
+        return "draw";
+      }
+    }
   };
 
   return (
