@@ -36,6 +36,9 @@ const Home = () => {
         (item: { user: string; score: number }) => item.user === user.name
       );
       setMyScore(findMyScore?.score || 0);
+    } else {
+      const newScore = [{ user: user.name, score: 0 }];
+      setAllScore(newScore);
     }
   }, [user]);
 
